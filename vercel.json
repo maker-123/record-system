@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/patients": {
+      "maxDuration": 30
+    }
+  }
+}
