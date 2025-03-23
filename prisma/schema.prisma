@@ -12,61 +12,52 @@ model User {
   createdAt DateTime @default(now())
   email     String   @unique
   name      String?
-  role      Role     @default(USER)
+  role      String   @default("USER")
 }
-
-model Task {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  title String
+enum Gender {
+  Male
+  Female
 }
-
-enum Role {
-  USER
-  ADMIN
-}
-
 model Patient {
-  id          String       @id @default(auto()) @map("_id") @db.ObjectId
-  first_name    String
-  last_name    String
-  dob         DateTime
-  weight      Float
-  height      Float
-  pregnancy Pregnancy
-  allergies   Allergies
-  renal_function Renal_function
-  medications Medication[] @relation("PatientToMedication")
-}
-enum Allergies {
-  NKDA
-  SKIN_RASH
-  HIVES
-  ITCHING
-  FEVER
-  SHORTNESS_OF_BREATH
-  SWELLING
-  WHEEZING
-  RUNNY_NOSE
-  ITCHY_WATERY_EYES
-}
+  id               String  @id @default(auto()) @map("_id") @db.ObjectId
+  firstName        String
+  lastName         String
+  dob              DateTime
+  gender           Gender
+  email            String  @unique
+  phone            Int     @unique
+  street           String
+  city            String
+  zip             Int
+  age             Int
+  weight          Float
+  height          Float
 
-enum Pregnancy {
-  Not_Pregnant
-  Pregnant
-  Lactating
-}
+  pregnancy       String?
+  allergies       String[]
+  renalFunction   String?
+  liverFunction   String?
 
-enum Renal_function {
-  Normal
-  Impaired
-  Not_Assessed
-}
-enum Liver_function {
-  Normal
-  Impaired
-  Not_Assessed
-}
+  bloodPressure   String?
+  heartRate       String?
+  respiratoryRate String?
+  temperature     String?
+  oxygenSaturation String?
+  // mrn            String? 
+  painScale      String?
+  status         Medication_Status
 
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  medications     Medication[] @relation("PatientToMedication")
+}
+enum Medication_Status {
+  medication_not_set
+  pending
+  finished
+  overDue
+}
 model Medication {
   id           String  @id @default(auto()) @map("_id") @db.ObjectId
   name         String
@@ -75,6 +66,6 @@ model Medication {
   frequency    String
   indication   String
   prescribedBy String
-  patientId    String  @db.ObjectId // Corrected type
+  patientId    String  @db.ObjectId
   patient      Patient @relation("PatientToMedication", fields: [patientId], references: [id])
 }
