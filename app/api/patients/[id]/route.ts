@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import moment from "moment";
 
 // import { useRouter } from "next/navigation";
 // const router = useRouter();
@@ -62,10 +63,9 @@ export async function DELETE(req: NextRequest) {
 
 export async function PUT(req: NextRequest) {
   try {
-    // Extract query parameters from the request URL
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
-
+    console.log(id);
     if (!id) {
       return NextResponse.json(
         { message: "Patient ID is required" },
@@ -74,7 +74,7 @@ export async function PUT(req: NextRequest) {
     }
 
     const data = await req.json();
-
+    delete data.id;
     // Ensure data is provided
     if (!data || Object.keys(data).length === 0) {
       return NextResponse.json(
@@ -82,11 +82,19 @@ export async function PUT(req: NextRequest) {
         { status: 400 }
       );
     }
-
+    const formattedData = {
+      ...data,
+      dob: moment(data.dob, "YYYY-MM-DD").toDate(),
+      phone: parseInt(data.phone),
+      zip: parseInt(data.zip),
+      age: parseInt(data.age),
+      weight: parseFloat(data.weight),
+      height: parseFloat(data.height),
+    };
     // Update the patient
     const updatedPatient = await prisma.patient.update({
       where: { id },
-      data,
+      data: formattedData,
     });
 
     return NextResponse.json(updatedPatient);

@@ -59,7 +59,10 @@ const PatientModal: React.FC<PatientModalProps> = ({
       };
 
       if (isEditMode) {
-        await axios.put(`/api/patients/update/${patient?.id}`, formattedData);
+        await axios.put(
+          `/api/patients/${patient?.id}?id=${patient?.id}`,
+          formattedData
+        );
         toast.success("Patient record updated successfully!");
       } else {
         await axios.post("/api/patients/create", formattedData);

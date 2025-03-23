@@ -24,7 +24,7 @@ const DeletePatientModal: React.FC<DeletePatientModalProps> = ({
   const handleDelete = async () => {
     try {
       setLoading(true);
-      await axios.delete(`/api/patients/${patientId}`);
+      await axios.delete(`/api/patients/${patientId}?id=${patientId}`);
       toast.success("Patient record deleted successfully!");
       onDeleteSuccess(); // Refresh the patient list
       onClose(); // Close modal after deletion
