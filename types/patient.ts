@@ -2,27 +2,25 @@ export interface Patient {
   id: string;
   firstName: string;
   lastName: string;
-  dob: string; // Formatted date string (YYYY-MM-DD)
-  gender: "Male" | "Female" | "Other"; // Enum matching Prisma
+  dob: string;
+  gender: "Male" | "Female";
   email: string;
   phone: number;
   street: string;
   city: string;
   zip: number;
+  age: number;
   weight: number;
   height: number;
-  age: number;
-  // mrn: string;
-
   pregnancy?: string;
-  allergies: string[]; // Array of allergies
+  allergies: string[];
   renalFunction?: string;
   liverFunction?: string;
-
   bloodPressure?: string;
   heartRate?: string;
   respiratoryRate?: string;
   temperature?: string;
   oxygenSaturation?: string;
+  painScale?: string;
   status: string;
 }

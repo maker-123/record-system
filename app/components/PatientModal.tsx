@@ -10,7 +10,9 @@ import { toast } from "react-toastify";
 interface PatientModalProps {
   isOpen: boolean;
   onClose: () => void;
-  patient?: Patient | null; // Allow editing when a patient is passed
+  // patient?: Patient | null; // Allow editing when a patient is passed
+  patient: Patient | null; // 👈 Use the Patient type
+
   refreshPatients: () => void; // Refresh list after save
 }
 
@@ -30,8 +32,9 @@ const PatientModal: React.FC<PatientModalProps> = ({
     if (patient) {
       setId(patient.id);
       console.log(patient);
-      Object.keys(patient).forEach((key) => {
-        setValue(key as keyof Patient, (patient as any)[key]);
+
+      Object.entries(patient).forEach(([key, value]) => {
+        setValue(key as keyof Patient, value as never); // Ensures type compatibility
       });
     } else {
       reset();

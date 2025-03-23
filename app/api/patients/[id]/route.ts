@@ -1,14 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 
+// import { useRouter } from "next/navigation";
+// const router = useRouter();
 const prisma = new PrismaClient();
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest) {
   try {
-    const { id } = params;
+    // Correct way to access search params in a server function
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
 
     if (!id) {
       return NextResponse.json(
@@ -25,25 +26,18 @@ export async function GET(
       return NextResponse.json({ error: "Patient not found" }, { status: 404 });
     }
 
-    return NextResponse.json(patient, { status: 200 });
+    return NextResponse.json(patient);
   } catch (error) {
     console.error("Error fetching patient:", error);
-    return NextResponse.json(
-      { error: "Internal server error" },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
-
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest) {
   try {
     console.log("Deleting patient...");
 
-    const { id } = params; // ✅ Get id from the request params
-
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
     if (!id) {
       return NextResponse.json(
         { error: "Patient ID is required" },
@@ -66,20 +60,38 @@ export async function DELETE(
   }
 }
 
-export async function PUT(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function PUT(req: NextRequest) {
   try {
+    // Extract query parameters from the request URL
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id");
+
+    if (!id) {
+      return NextResponse.json(
+        { message: "Patient ID is required" },
+        { status: 400 }
+      );
+    }
+
     const data = await req.json();
+
+    // Ensure data is provided
+    if (!data || Object.keys(data).length === 0) {
+      return NextResponse.json(
+        { message: "No update data provided" },
+        { status: 400 }
+      );
+    }
+
+    // Update the patient
     const updatedPatient = await prisma.patient.update({
-      where: { id: params.id },
+      where: { id },
       data,
     });
 
     return NextResponse.json(updatedPatient);
   } catch (error) {
-    console.error(error);
+    console.error("Error updating patient:", error);
     return NextResponse.json(
       { message: "Error updating patient" },
       { status: 500 }
