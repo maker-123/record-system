@@ -54,6 +54,7 @@ model Patient {
 }
 enum Medication_Status {
   medication_not_set
+  medication_set
   pending
   finished
   overDue
