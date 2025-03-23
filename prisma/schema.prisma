@@ -1,0 +1,80 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt DateTime @default(now())
+  email     String   @unique
+  name      String?
+  role      Role     @default(USER)
+}
+
+model Task {
+  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  title String
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model Patient {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  first_name    String
+  last_name    String
+  dob         DateTime
+  weight      Float
+  height      Float
+  pregnancy Pregnancy
+  allergies   Allergies
+  renal_function Renal_function
+  medications Medication[] @relation("PatientToMedication")
+}
+enum Allergies {
+  NKDA
+  SKIN_RASH
+  HIVES
+  ITCHING
+  FEVER
+  SHORTNESS_OF_BREATH
+  SWELLING
+  WHEEZING
+  RUNNY_NOSE
+  ITCHY_WATERY_EYES
+}
+
+enum Pregnancy {
+  Not_Pregnant
+  Pregnant
+  Lactating
+}
+
+enum Renal_function {
+  Normal
+  Impaired
+  Not_Assessed
+}
+enum Liver_function {
+  Normal
+  Impaired
+  Not_Assessed
+}
+
+model Medication {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  dosage       String
+  route        String
+  frequency    String
+  indication   String
+  prescribedBy String
+  patientId    String  @db.ObjectId // Corrected type
+  patient      Patient @relation("PatientToMedication", fields: [patientId], references: [id])
+}
