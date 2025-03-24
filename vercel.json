@@ -1,6 +1,9 @@
 {
   "functions": {
-    "api/*": {
+    "app/api/patients/route": {
+      "maxDuration": 60
+    },
+    "app/api/medications/route": {
       "maxDuration": 60
     }
   }
