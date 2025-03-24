@@ -1,7 +1,12 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    functions: {
+      "api/*": {
+        maxDuration: 60, // Set timeout limit for all API routes
+      },
+    },
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
