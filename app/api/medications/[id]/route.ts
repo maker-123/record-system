@@ -1,34 +1,34 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+// export async function GET(
+//   req: Request,
+//   { params }: { params: { id: string } }
+// ) {
+//   const { id } = params;
 
-  try {
-    const medication = await prisma.medication.findUnique({
-      where: { id },
-      include: { patient: true },
-    });
+//   try {
+//     const medication = await prisma.medication.findUnique({
+//       where: { id },
+//       include: { patient: true },
+//     });
 
-    if (!medication) {
-      return NextResponse.json(
-        { error: "Medication not found" },
-        { status: 404 }
-      );
-    }
+//     if (!medication) {
+//       return NextResponse.json(
+//         { error: "Medication not found" },
+//         { status: 404 }
+//       );
+//     }
 
-    return NextResponse.json(medication, { status: 200 });
-  } catch (error) {
-    console.error("Error fetching medication:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch medication" },
-      { status: 500 }
-    );
-  }
-}
+//     return NextResponse.json(medication, { status: 200 });
+//   } catch (error) {
+//     console.error("Error fetching medication:", error);
+//     return NextResponse.json(
+//       { error: "Failed to fetch medication" },
+//       { status: 500 }
+//     );
+//   }
+// }
 
 export async function PUT(req: Request) {
   try {
@@ -74,24 +74,24 @@ export async function PUT(req: Request) {
   }
 }
 
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+// export async function DELETE(
+//   req: Request,
+//   { params }: { params: { id: string } }
+// ) {
+//   const { id } = params;
 
-  try {
-    await prisma.medication.delete({ where: { id } });
+//   try {
+//     await prisma.medication.delete({ where: { id } });
 
-    return NextResponse.json(
-      { message: "Medication deleted successfully" },
-      { status: 200 }
-    );
-  } catch (error) {
-    console.error("Error deleting medication:", error);
-    return NextResponse.json(
-      { error: "Failed to delete medication" },
-      { status: 500 }
-    );
-  }
-}
+//     return NextResponse.json(
+//       { message: "Medication deleted successfully" },
+//       { status: 200 }
+//     );
+//   } catch (error) {
+//     console.error("Error deleting medication:", error);
+//     return NextResponse.json(
+//       { error: "Failed to delete medication" },
+//       { status: 500 }
+//     );
+//   }
+// }
