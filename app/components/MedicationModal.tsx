@@ -77,6 +77,7 @@ const MedicationModal: React.FC<MedicationModalProps> = ({
       refreshMedications();
     } catch (error) {
       console.log(error);
+
       toast.error("Error saving medication record.");
     } finally {
       setLoading(false);
