@@ -43,7 +43,6 @@ model Patient {
   respiratoryRate String?
   temperature     String?
   oxygenSaturation String?
-  // mrn            String? 
   painScale      String?
   status         Medication_Status
 
@@ -65,8 +64,9 @@ model Medication {
   dosage       String
   route        String
   frequency    String
-  indication   String
-  prescribedBy String
+  indication   String?
+  prescribedBy String?
+  preparation   String?
   patientId    String  @db.ObjectId
   patient      Patient @relation("PatientToMedication", fields: [patientId], references: [id])
 }

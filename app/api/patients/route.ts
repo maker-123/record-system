@@ -7,7 +7,12 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    const patients = await prisma.patient.findMany();
+    // const patients = await prisma.patient.findMany();
+    const patients = await prisma.patient.findMany({
+      include: {
+        medications: true, // Include medications for each patient
+      },
+    });
     return NextResponse.json(patients);
   } catch (error) {
     console.error("Error fetching patients:", error);

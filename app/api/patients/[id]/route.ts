@@ -65,7 +65,6 @@ export async function PUT(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
-    console.log(id);
     if (!id) {
       return NextResponse.json(
         { message: "Patient ID is required" },

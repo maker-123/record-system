@@ -1,47 +1,97 @@
-import { NextApiRequest, NextApiResponse } from "next";
+import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
+export async function GET(
+  req: Request,
+  { params }: { params: { id: string } }
 ) {
-  const { id } = req.query;
+  const { id } = params;
 
   try {
-    if (req.method === "GET") {
-      const medication = await prisma.medication.findUnique({
-        where: { id: id as string },
-        include: { patient: true }, // Include related patient details
-      });
+    const medication = await prisma.medication.findUnique({
+      where: { id },
+      include: { patient: true },
+    });
 
-      if (!medication)
-        return res.status(404).json({ error: "Medication not found" });
-
-      return res.status(200).json(medication);
+    if (!medication) {
+      return NextResponse.json(
+        { error: "Medication not found" },
+        { status: 404 }
+      );
     }
 
-    if (req.method === "PUT") {
-      const { name, dosage, route, frequency, indication, prescribedBy } =
-        req.body;
-
-      const updatedMedication = await prisma.medication.update({
-        where: { id: id as string },
-        data: { name, dosage, route, frequency, indication, prescribedBy },
-      });
-
-      return res.status(200).json(updatedMedication);
-    }
-
-    if (req.method === "DELETE") {
-      await prisma.medication.delete({ where: { id: id as string } });
-      return res
-        .status(200)
-        .json({ message: "Medication deleted successfully" });
-    }
-
-    return res.status(405).json({ error: "Method Not Allowed" });
+    return NextResponse.json(medication, { status: 200 });
   } catch (error) {
-    console.error(error);
-    return res.status(500).json({ error: "Internal Server Error" });
+    console.error("Error fetching medication:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch medication" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PUT(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get("id"); // Extract ID from query params
+
+    if (!id) {
+      return NextResponse.json(
+        { error: "Medication ID is required" },
+        { status: 400 }
+      );
+    }
+    const {
+      name,
+      dosage,
+      route,
+      frequency,
+      indication,
+      prescribedBy,
+      preparation,
+    } = await req.json();
+
+    const updatedMedication = await prisma.medication.update({
+      where: { id },
+      data: {
+        name,
+        dosage,
+        route,
+        frequency,
+        indication,
+        prescribedBy,
+        preparation,
+      },
+    });
+    console.log(updatedMedication);
+    return NextResponse.json(updatedMedication, { status: 200 });
+  } catch (error) {
+    console.error("Error updating medication:", error);
+    return NextResponse.json(
+      { error: "Failed to update medication" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  const { id } = params;
+
+  try {
+    await prisma.medication.delete({ where: { id } });
+
+    return NextResponse.json(
+      { message: "Medication deleted successfully" },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error deleting medication:", error);
+    return NextResponse.json(
+      { error: "Failed to delete medication" },
+      { status: 500 }
+    );
   }
 }

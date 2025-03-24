@@ -196,6 +196,7 @@ const Dashboard = () => {
         onClose={() => setMedicationModalOpen(false)}
         patientId={selectedPatientForMedication?.id ?? null}
         refreshMedications={refreshPatients}
+        medication={selectedPatientForMedication?.medications?.[0] ?? null}
       />
     </div>
   );

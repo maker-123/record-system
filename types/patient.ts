@@ -1,3 +1,14 @@
+export interface Medication {
+  id: string;
+  name: string;
+  dosage: string;
+  route: string;
+  frequency: string;
+  indication: string;
+  prescribedBy: string;
+  patientId: string;
+}
+
 export interface Patient {
   id: string;
   firstName: string;
@@ -23,4 +34,5 @@ export interface Patient {
   oxygenSaturation?: string;
   painScale?: string;
   status: string;
+  medications?: Medication[]; // ✅ Correctly typed as an array of Medication
 }
