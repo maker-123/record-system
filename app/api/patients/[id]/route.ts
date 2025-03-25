@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import { prisma } from "@/lib/prisma";
 import moment from "moment";
 
 // import { useRouter } from "next/navigation";
 // const router = useRouter();
-const prisma = new PrismaClient();
 
 export async function GET(req: NextRequest) {
   try {
