@@ -1,9 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  images: {
+    domains: ["res.cloudinary.com"],
+  },
   experimental: {
     functions: {
       "api/*": {
-        maxDuration: 60, // Set timeout limit for all API routes
+        maxDuration: 60,
       },
     },
   },

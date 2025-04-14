@@ -4,16 +4,15 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from "react";
-import { Patient } from "@/types/patient";
+import { Patient } from "@/lib/types";
 import { toast } from "react-toastify";
 
 interface PatientModalProps {
   isOpen: boolean;
   onClose: () => void;
-  // patient?: Patient | null; // Allow editing when a patient is passed
-  patient: Patient | null; // 👈 Use the Patient type
+  patient: Patient | null;
 
-  refreshPatients: () => void; // Refresh list after save
+  refreshPatients: () => void;
 }
 
 const PatientModal: React.FC<PatientModalProps> = ({
@@ -25,23 +24,22 @@ const PatientModal: React.FC<PatientModalProps> = ({
   const { register, handleSubmit, reset, setValue } = useForm<Patient>();
   const [loading, setLoading] = useState(false);
   const [id, setId] = useState("");
-  const isEditMode = Boolean(patient); // Check if editing
+  const isEditMode = Boolean(patient);
 
-  // Prefill form fields when editing
   useEffect(() => {
     if (patient) {
       setId(patient.id);
       console.log(patient);
 
       Object.entries(patient).forEach(([key, value]) => {
-        setValue(key as keyof Patient, value as never); // Ensures type compatibility
+        setValue(key as keyof Patient, value as never);
       });
     } else {
       reset();
     }
   }, [patient, setValue, reset]);
 
-  if (!isOpen) return null; // Don't render if modal is closed
+  if (!isOpen) return null;
 
   const onSubmit = async (data: Patient) => {
     try {
@@ -71,7 +69,7 @@ const PatientModal: React.FC<PatientModalProps> = ({
 
       reset();
       onClose();
-      refreshPatients(); // Refresh list
+      refreshPatients();
     } catch (error) {
       console.log(error);
       toast.error("Error saving patient record.");
@@ -84,11 +82,11 @@ const PatientModal: React.FC<PatientModalProps> = ({
     <div
       className="fixed inset-0 flex justify-center items-center"
       style={{ backgroundColor: "rgba(0, 0, 0, 0.75)" }}
-      onMouseDown={onClose} // Close modal when clicking outside
+      onMouseDown={onClose}
     >
       <div
         className="bg-white shadow-md rounded-xl p-8 max-w-4xl w-full"
-        onMouseDown={(e) => e.stopPropagation()} // Prevent closing when clicking inside
+        onMouseDown={(e) => e.stopPropagation()}
       >
         <h1 className="text-black text-xl font-bold mb-6 ">
           {isEditMode ? `Edit Patient (${id})` : "Add New Patient"}{" "}
@@ -98,7 +96,6 @@ const PatientModal: React.FC<PatientModalProps> = ({
           onSubmit={handleSubmit(onSubmit)}
           className="grid gap-4 md:grid-cols-2"
         >
-          {/* Form Fields */}
           {[
             {
               label: "First Name",
@@ -133,7 +130,6 @@ const PatientModal: React.FC<PatientModalProps> = ({
             { label: "Weight (kg)", name: "weight", type: "number" },
             { label: "Height (cm)", name: "height", type: "number" },
 
-            // { label: "MRN", name: "mrn", type: "text" },
             { label: "Blood Pressure", name: "bloodPressure", type: "text" },
             { label: "Heart Rate", name: "heartRate", type: "text" },
             {
@@ -164,7 +160,6 @@ const PatientModal: React.FC<PatientModalProps> = ({
             </div>
           ))}
 
-          {/* Gender */}
           <div className="flex flex-col">
             <label className="text-sm font-semibold text-gray-600">
               Gender
@@ -178,7 +173,6 @@ const PatientModal: React.FC<PatientModalProps> = ({
             </select>
           </div>
 
-          {/* Allergies */}
           <div className="flex flex-col">
             <label className="text-sm font-semibold text-gray-600">
               Allergies
@@ -197,7 +191,6 @@ const PatientModal: React.FC<PatientModalProps> = ({
             </select>
           </div>
 
-          {/* Buttons */}
           <div className="md:col-span-2 flex justify-between mt-4">
             <button
               type="button"

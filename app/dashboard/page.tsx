@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react";
 import moment from "moment";
 import { Plus, CircleX, UserRoundPen, PillBottle } from "lucide-react";
-import PatientModal from "../components/PatientModal";
-import DeletePatientModal from "../components/DeletePatientModal";
-import MedicationModal from "../components/MedicationModal";
-import { Patient } from "@/types/patient";
+import PatientModal from "./../components/PatientModal";
+import DeletePatientModal from "./../components/DeletePatientModal";
+import MedicationModal from "./../components/MedicationModal";
+import { Patient } from "@/lib/types";
 
 const Dashboard = () => {
   const [patients, setPatients] = useState<Patient[]>([]);

@@ -1,16 +1,12 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
-// import { PrismaClient } from "@prisma/client";
 import moment from "moment";
-
-// const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    // const patients = await prisma.patient.findMany();
     const patients = await prisma.patient.findMany({
       include: {
-        medications: true, // Include medications for each patient
+        medications: true,
       },
     });
     return NextResponse.json(patients);
@@ -27,7 +23,6 @@ export async function POST(req: Request) {
   try {
     const data = await req.json();
 
-    // Convert date format
     const formattedData = {
       ...data,
       dob: moment(data.dob, "YYYY-MM-DD").toDate(),

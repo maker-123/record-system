@@ -1,3 +1,5 @@
+import { JwtPayload } from "jsonwebtoken";
+
 export interface Medication {
   id: string;
   name: string;
@@ -34,5 +36,22 @@ export interface Patient {
   oxygenSaturation?: string;
   painScale?: string;
   status: string;
-  medications?: Medication[]; // ✅ Correctly typed as an array of Medication
+  medications?: Medication[];
+}
+export interface DecodedToken extends JwtPayload {
+  id: string;
+  email: string;
+}
+export interface Product {
+  id: string;
+  image: string;
+  title: string;
+  description: string;
+  price: number;
+  discountedPrice: number;
+  tags: string[];
+  rating: number;
+  numReviews: number;
+  createdAt: string;
+  updatedAt: string;
 }

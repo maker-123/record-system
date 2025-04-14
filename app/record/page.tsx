@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import moment from "moment";
 import { useState } from "react";
-import { Patient } from "@/types/patient";
+import { Patient } from "@/lib/types";
 import { toast } from "react-toastify";
 
 const Record = () => {
@@ -19,7 +19,7 @@ const Record = () => {
         ...data,
         allergies: Array.isArray(data.allergies)
           ? data.allergies
-          : [data.allergies], // Ensure it's always an array
+          : [data.allergies],
         dob: moment(data.dob).format("YYYY-MM-DD"),
         weight: parseFloat(data.weight.toString()),
         height: parseFloat(data.height.toString()),
@@ -107,7 +107,6 @@ const Record = () => {
             </div>
           ))}
 
-          {/* Gender */}
           <div className="flex flex-col">
             <label className="text-sm font-semibold text-gray-600">
               Gender
@@ -121,7 +120,6 @@ const Record = () => {
             </select>
           </div>
 
-          {/* Allergies */}
           <div className="flex flex-col">
             <label className="text-sm font-semibold text-gray-600">
               Allergies
@@ -140,7 +138,6 @@ const Record = () => {
             </select>
           </div>
 
-          {/* Pregnancy Status */}
           <div className="flex flex-col">
             <label className="text-sm font-semibold text-gray-600">
               Pregnancy Status
@@ -156,7 +153,6 @@ const Record = () => {
             </select>
           </div>
 
-          {/* Renal Function */}
           <div className="flex flex-col">
             <label className="text-sm font-semibold text-gray-600">
               Renal Function
@@ -172,7 +168,6 @@ const Record = () => {
             </select>
           </div>
 
-          {/* Submit Button */}
           <div className="md:col-span-2 flex justify-end">
             <button
               type="submit"
