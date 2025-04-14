@@ -1,17 +1,19 @@
 import Header from "@/app/components/header";
 import Image from "next/image";
 import Link from "next/link";
+import axios from "axios";
 
 async function getProduct(id: string) {
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:8080";
-  const res = await fetch(`${baseUrl}/api/products/${id}`, {
-    cache: "no-store",
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
+
+  const { data } = await axios.get(`${baseUrl}/api/products/${id}`, {
+    headers: {
+      "Cache-Control": "no-store",
+    },
   });
 
-  if (!res.ok) throw new Error("Failed to fetch product");
-  return res.json();
+  return data;
 }
-
 export default async function ProductDetails({
   params,
 }: {
@@ -34,7 +36,7 @@ export default async function ProductDetails({
               className="w-full object-contain bg-white"
             />
           </div>
-          <div className="mt-4 flex gap-2">
+          {/* <div className="mt-4 flex gap-2">
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
@@ -52,7 +54,7 @@ export default async function ProductDetails({
                 />
               </div>
             ))}
-          </div>
+          </div> */}
         </div>
 
         <div>
