@@ -35,14 +35,12 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Create the medication entry
     const medication = await prisma.medication.create({
       data: {
         ...data,
       },
     });
 
-    // Update patient's status to "medication set"
     await prisma.patient.update({
       where: { id: data.patientId },
       data: { status: "medication_set" },

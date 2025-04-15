@@ -38,12 +38,10 @@ const MedicationModal: React.FC<MedicationModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       if (medication) {
-        // Populate form fields when editing
         Object.entries(medication).forEach(([key, value]) => {
           setValue(key as keyof Medication, value as never);
         });
       } else {
-        // Clear form fields when creating a new medication
         reset();
       }
     }

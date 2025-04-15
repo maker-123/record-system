@@ -4,7 +4,6 @@ import { prisma } from "@/lib/prisma";
 
 export async function GET() {
   try {
-    // Fetch all products from the database
     const products = await prisma.products.findMany();
 
     return NextResponse.json(products);

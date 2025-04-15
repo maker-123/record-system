@@ -19,9 +19,9 @@ interface Medication {
 interface MedicationModalProps {
   isOpen: boolean;
   onClose: () => void;
-  medication: Medication | null; // Optional for editing
-  patientId: string; // Ensure it's linked to a patient
-  refreshMedications: () => void; // Callback to refresh list
+  medication: Medication | null;
+  patientId: string;
+  refreshMedications: () => void;
 }
 
 const MedicationModal: React.FC<MedicationModalProps> = ({
@@ -35,7 +35,6 @@ const MedicationModal: React.FC<MedicationModalProps> = ({
   const [loading, setLoading] = useState(false);
   const isEditMode = Boolean(medication);
 
-  // Prefill form when editing
   useEffect(() => {
     if (medication) {
       Object.entries(medication).forEach(([key, value]) => {

@@ -6,7 +6,6 @@ export async function POST(req: NextRequest) {
   try {
     const data = await req.json();
 
-    // Format data correctly
     const formattedData = {
       ...data,
       dob: moment(data.dob, "YYYY-MM-DD").toDate(),

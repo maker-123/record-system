@@ -1,5 +1,3 @@
-// components/ProductCard.tsx
-
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,8 +20,6 @@ const ProductCard: React.FC<ProductCardProps> = ({
   description,
   price,
   discountedPrice,
-  // rating,
-  // numReviews,
 }) => {
   return (
     <Link href={`/products/${id}`}>

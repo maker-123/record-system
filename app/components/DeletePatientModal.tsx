@@ -7,8 +7,8 @@ import { toast } from "react-toastify";
 interface DeletePatientModalProps {
   isOpen: boolean;
   onClose: () => void;
-  patientId: string | null; // ID of the patient to delete
-  onDeleteSuccess: () => void; // Callback to refresh the dashboard after deletion
+  patientId: string | null;
+  onDeleteSuccess: () => void;
 }
 
 const DeletePatientModal: React.FC<DeletePatientModalProps> = ({
@@ -19,15 +19,15 @@ const DeletePatientModal: React.FC<DeletePatientModalProps> = ({
 }) => {
   const [loading, setLoading] = useState(false);
 
-  if (!isOpen || !patientId) return null; // Don't render if modal is closed or patient ID is missing
+  if (!isOpen || !patientId) return null;
 
   const handleDelete = async () => {
     try {
       setLoading(true);
       await axios.delete(`/api/patients/${patientId}?id=${patientId}`);
       toast.success("Patient record deleted successfully!");
-      onDeleteSuccess(); // Refresh the patient list
-      onClose(); // Close modal after deletion
+      onDeleteSuccess();
+      onClose();
     } catch (error) {
       console.error("Error deleting patient:", error);
       toast.error("Failed to delete patient.");

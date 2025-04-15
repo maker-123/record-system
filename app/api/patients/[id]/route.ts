@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import moment from "moment";
-import { ObjectId } from "mongodb"; // Required for MongoDB ObjectId handling
+import { ObjectId } from "mongodb";
 
 export async function GET(req: NextRequest) {
   try {
-    // Correct way to access search params in a server function
     const { searchParams } = new URL(req.url);
     const id = searchParams.get("id");
 
@@ -44,7 +43,6 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    // Ensure the ID is a valid ObjectId for MongoDB
     if (!ObjectId.isValid(id)) {
       return NextResponse.json(
         { error: "Invalid patient ID format" },
@@ -52,16 +50,13 @@ export async function DELETE(req: NextRequest) {
       );
     }
 
-    // Check if patient exists before attempting to delete
     const existingPatient = await prisma.patient.findUnique({ where: { id } });
     if (!existingPatient) {
       return NextResponse.json({ error: "Patient not found" }, { status: 404 });
     }
 
-    // Cascade delete related medications (if necessary)
     await prisma.medication.deleteMany({ where: { patientId: id } });
 
-    // Delete the patient
     await prisma.patient.delete({ where: { id } });
 
     return NextResponse.json(
@@ -99,7 +94,6 @@ export async function PUT(req: NextRequest) {
       );
     }
 
-    // Format numerical and date values
     const formattedData = {
       ...data,
       dob: moment(data.dob, "YYYY-MM-DD").toDate(),
@@ -114,10 +108,9 @@ export async function PUT(req: NextRequest) {
               id: med.id,
             })),
           }
-        : undefined, // Ensure Prisma does not override medications if undefined
+        : undefined,
     };
 
-    // Update the patient
     const updatedPatient = await prisma.patient.update({
       where: { id },
       data: formattedData,

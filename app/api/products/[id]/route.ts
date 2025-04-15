@@ -12,7 +12,6 @@ function extractPublicIdFromUrl(url: string): string | null {
 type Props = {
   params: Promise<{ id: string }>;
 };
-// type tParams = Promise<{ slug: string[] }>;
 export async function GET(req: NextRequest, { params }: Props) {
   const { id } = await params;
 
@@ -67,7 +66,7 @@ export async function PUT(req: NextRequest, { params }: Props) {
               if (!result)
                 return reject(new Error("Upload failed with no result"));
 
-              resolve(result); // ✅ Correctly typed now
+              resolve(result);
             })
             .end(buffer);
         }
