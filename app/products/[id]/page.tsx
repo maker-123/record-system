@@ -21,7 +21,7 @@ async function getProduct(id: string) {
 export default async function ProductPage({ params }: Props) {
   const { id } = await params;
   const product = await getProduct(id);
-
+  console.log(process.env.JWT_SECRET);
   return (
     <div className="bg-gray-100 min-h-screen">
       <Header />
