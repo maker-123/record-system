@@ -3,6 +3,9 @@ import Image from "next/image";
 import Link from "next/link";
 import axios from "axios";
 
+type Props = {
+  params: Promise<{ id: string }>;
+};
 async function getProduct(id: string) {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000";
 
@@ -14,17 +17,15 @@ async function getProduct(id: string) {
 
   return data;
 }
-export default async function ProductDetails({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const product = await getProduct(params.id);
+
+export default async function ProductPage({ params }: Props) {
+  const { id } = await params;
+  const product = await getProduct(id);
 
   return (
-    <div className=" bg-gray-100 min-h-screen ">
-      <Header></Header>
-      <div className="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-10 bg-white mt-10 shadow-sm  rounded-3xl">
+    <div className="bg-gray-100 min-h-screen">
+      <Header />
+      <div className="max-w-6xl mx-auto p-6 grid md:grid-cols-2 gap-10 bg-white mt-10 shadow-sm rounded-3xl">
         <div>
           <div className="border rounded-md overflow-hidden">
             <Image
@@ -36,25 +37,6 @@ export default async function ProductDetails({
               className="w-full object-contain bg-white"
             />
           </div>
-          {/* <div className="mt-4 flex gap-2">
-            {[...Array(4)].map((_, i) => (
-              <div
-                key={i}
-                className={`w-20 h-20 border rounded cursor-pointer ${
-                  i === 0 ? "ring-2 ring-blue-600" : ""
-                }`}
-              >
-                <Image
-                  priority
-                  src={product.image}
-                  alt={`Thumbnail ${i}`}
-                  width={80}
-                  height={80}
-                  className="w-full"
-                />
-              </div>
-            ))}
-          </div> */}
         </div>
 
         <div>
